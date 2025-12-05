@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  ollama-claude-proxy:
+    image: ollama-claude-proxy
+    build: .
+    container_name: ollama-claude-proxy
+    ports:
+      - "11434:11434"
+    environment:
+      - USE_VERTEX_AI=1
+      - VERTEX_PROJECT_ID=td2-claude
+      - VERTEX_REGION=global
+      - FLASK_PORT=11434
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
+    volumes:
+      # Mount the entire gcloud config directory
+      - ${APPDATA}/gcloud:/root/.config/gcloud:ro
+    restart: unless-stopped
